@@ -1,0 +1,78 @@
+---
+ 
+deployment_type: openshift-enterprise
+openshift_deployment_type: openshift-enterprise
+containerized: false
+openshift_release: v3.11
+ 
+openshift_master_api_port: 443
+openshift_master_console_port: 443
+#openshift_disable_check: docker_image_availability
+ 
+osm_default_node_selector: 'node-role.kubernetes.io/compute=true'
+osm_use_cockpit: true
+osm_cockpit_plugins:
+- 'cockpit-kubernetes'
+ 
+# Enable the Multi-Tenant plugin
+os_sdn_network_plugin_name: 'redhat/openshift-ovs-multitenant'
+os_firewall_use_firewalld: true
+ 
+# OpenShift FQDNs, DNS, App domain specific configurations
+openshift_master_cluster_method: native
+openshift_master_default_subdomain: "vmi276825.contaboserver.net
+openshift_master_cluster_hostname: "vmi276825.contaboserver.net"
+openshift_master_cluster_public_hostname: "vmi276825.contaboserver.net"
+ 
+# Docker registry
+oreg_url: vmi276825.contaboserver.net:5000/openshift3/ose-${component}:${version}
+openshift_examples_modify_imagestreams: true
+openshift_docker_insecure_registries: vmi276825.contaboserver.net:5000
+ 
+openshift_node_open_ports:
+  - service: "router stats port"
+    port: "1936/tcp"
+#  - service: "prometheus node exporter"
+#    port: "9100/tcp"
+ 
+#
+# OpenShift Node specific parameters
+#
+openshift_node_groups:
+- name: node-config-master
+  labels:
+  - 'node-role.kubernetes.io/master=true'
+  edits:
+  - key: kubeletArguments.kube-reserved
+    value:
+    - 'cpu=200m'
+    - 'memory=200M'
+  - key: kubeletArguments.system-reserved
+    value:
+    - 'cpu=200m'
+    - 'memory=400M'
+- name: node-config-infra
+  labels:
+  - 'node-role.kubernetes.io/infra=true'
+  edits:
+  - key: kubeletArguments.kube-reserved
+    value:
+    - 'cpu=200m'
+    - 'memory=200M'
+  - key: kubeletArguments.system-reserved
+    value:
+    - 'cpu=200m'
+    - 'memory=400M'
+- name: node-config-compute
+  labels:
+  - 'node-role.kubernetes.io/compute=true'
+  - 'bduk/environment=preprod'
+  edits:
+  - key: kubeletArguments.kube-reserved
+    value:
+    - 'cpu=200m'
+    - 'memory=200M'
+  - key: kubeletArguments.system-reserved
+    value:
+    - 'cpu=200m'
+    - 'memory=400M'

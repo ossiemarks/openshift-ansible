@@ -1,0 +1,54 @@
+---
+
+- hosts: all
+  remote_user: root
+  become: true
+
+  tasks:
+
+
+  - name: Set authorized key taken from file
+    authorized_key:
+      user: root
+      state: present
+      key: "{{ lookup('file', '/Users/osmanmarks/.ssh/id_rsa.pub') }}"
+
+
+  - name: update yum
+    yum:
+      name: '*'
+      state: latest
+  
+  - name: populate hosts file1
+    command: "echo '173.212.244.176 vmi276822 vmi276822.contaboserver.net' >> /etc/hosts"
+  
+  - name: Ensure we have our own comment added to /etc/services
+    lineinfile:
+      path: /etc/hosts
+      regexp: '$'
+      line: '173.212.244.176 vmi276822 vmi276822.contaboserver.net \
+             207.180.246.108 vmi276824 vmi276824.contaboserver.net \ 
+             207.180.244.117 vmi276825 vmi276825.contaboserver.net'
+
+  - name: insert google DNS 
+    lineinfile: 
+      path: /etc/resolv.conf
+      regex: '$'
+      line: 'nameserver 8.8.8.8'
+    tags:
+      fix_dns
+
+  - name: Put SELinux in permissive mode, logging actions that would be blocked.
+    selinux:
+      policy: targeted
+      state: permissive
+  
+  - name: reboot for changes
+    command: reboot
+    tags:
+      reboot
+  
+  # - name: adhoc command
+  #   command: {{ adhoc }}
+  #   tags:
+  #     status
