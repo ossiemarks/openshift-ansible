@@ -20,14 +20,14 @@ os_firewall_use_firewalld: true
  
 # OpenShift FQDNs, DNS, App domain specific configurations
 openshift_master_cluster_method: native
-openshift_master_default_subdomain: "vmi276825.contaboserver.net
-openshift_master_cluster_hostname: "vmi276825.contaboserver.net"
-openshift_master_cluster_public_hostname: "vmi276825.contaboserver.net"
+openshift_master_default_subdomain: "boeingdefence.co.uk"
+openshift_master_cluster_hostname: "openshift-MN"
+openshift_master_cluster_public_hostname: "openshift-MN.boeingdefence.co.uk"
  
 # Docker registry
-oreg_url: vmi276825.contaboserver.net:5000/openshift3/ose-${component}:${version}
+oreg_url: openshift-MN.boeingdefence.co.uk:5000/openshift3/ose-${component}:${version}
 openshift_examples_modify_imagestreams: true
-openshift_docker_insecure_registries: vmi276825.contaboserver.net:5000
+openshift_docker_insecure_registries: openshift-MN.boeingdefence.co.uk:5000
  
 openshift_node_open_ports:
   - service: "router stats port"
