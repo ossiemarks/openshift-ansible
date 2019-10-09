@@ -229,7 +229,7 @@
   - control_plane_pods.module_results.results is defined
   - control_plane_pods.module_results.results | length > 0
   retries: 60
-  delay: 5
+  delay: 10
   with_items:
   - "{{ 'etcd' if inventory_hostname in groups['oo_etcd_to_config'] else omit }}"
   - api

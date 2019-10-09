@@ -8,24 +8,14 @@
   tasks:
 
 
-#  - name: Set authorized key taken from file
-#    authorized_key:
-#      user: root
-#      state: present
-#      key: "{{ lookup('file', '/Users/osmanmarks/.ssh/id_rsa.pub') }}"
-
-#  - name: add my temp subscription
-#    shell: subscription-manager register --org=11546460 --activationkey=build-labs-all
-#    tags:
-#      attach
+  - name: add my temp subscription
+    shell: subscription-manager register --org=11546460 --activationkey=build-labs-all
+    tags:
+      attach
   - name: attatch sub
-    shell: subscription-manager attach --auto 
+    shell: subscription-manager attach --pool=8a85f99b6d6e1ad3016d82450d5b42d9
     tags:
       sub
- # - name: add repos
- #   shell: subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-extras-rpms"
- #   tags:
- #     repo
   - name: add subs
     shell: subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.6-rpms"
     tags:
@@ -46,9 +36,6 @@
     tags:
       update
   
-#  - name: populate hosts file1
- #   command: "echo '173.212.244.176 vmi276822 vmi276822.contaboserver.net' >> /etc/hosts"
-
   - name: update /etc/hosts file
     become: true
     blockinfile:
@@ -56,20 +43,6 @@
       content: "{{ lookup('template', 'templates/etc_hosts.j2') }}"
       state: present
   
-
-#
-#  - name: Ensure we have our own comment added to /etc/services
-#    lineinfile:
-#      path: /etc/hosts
-#      regexp: '$'
-#      line: '173.212.244.176 vmi276822 vmi276822.contaboserver.net \
-#             207.180.246.108 vmi276824 vmi276824.contaboserver.net \ 
-#             207.180.244.117 vmi276825 vmi276825.contaboserver.net'
-
-  - name: nm disbale
-    shell: systemctl disable NetworkManager
-    tags:
-      nm
 
   - name: add peer dns to en1 
     lineinfile: 
@@ -79,10 +52,10 @@
       line: 'DNS1=8.8.8.8'
     tags:
       fix_dns
-  - name: remove dnsmasq
-    shell: yum -y remove dnsmasq ; rm -Rf /etc/dnsmasq
-    tags:
-      dns_masq
+ # - name: remove dnsmasq
+ #   shell: yum -y remove dnsmasq ; rm -Rf /etc/dnsmasq
+ #   tags:
+ #     dns_masq
 # - name: INSERT GOOgle DNS 
 #    lineinfile: 
 #      path: /etc/resolv.conf
