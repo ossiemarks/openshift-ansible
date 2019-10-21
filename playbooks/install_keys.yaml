@@ -9,13 +9,13 @@
 
 
   - name: add my temp subscription
-    shell: subscription-manager register --org=11546460 --activationkey=build-labs-all
+    shell: subscription-manager register --org=11546460 --activationkey=build-labs-all --force
     tags:
       attach
   - name: attatch sub
     shell: subscription-manager attach --pool=8a85f99b6d6e1ad3016d82450d5b42d9
     tags:
-      sub
+      subs
   - name: add subs
     shell: subscription-manager repos --enable="rhel-7-server-rpms" --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.11-rpms" --enable="rhel-7-server-ansible-2.6-rpms"
     tags:
