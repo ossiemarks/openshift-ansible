@@ -15,7 +15,7 @@ enable_excluders=false
 debug_loglevel=4
 #system_images_registry=10.1.192.52:5000
 oreg_url=10.1.192.52:5000/openshift/ose-${component}:${version}
-openshift_docker_insecure_registries==10.1.192.52:5000
+openshift_docker_insecure_registries=10.1.192.52:5000
 openshift_examples_modify_imagestreams=true
 openshift_disable_check=memory_availabilty,disk_availbility
 
